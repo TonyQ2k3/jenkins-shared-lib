@@ -1,14 +1,15 @@
 def call(Map config = [:]) {
     def registry = config.registry ?: 'docker.io'
+    def organization = config.organization
     def imageName = config.imageName
     def tag = config.tag ?: 'latest'
     def credentialsId = config.credentialsId
 
-    if (!imageName || !credentialsId) {
-        error "Missing required parameters: imageName and credentialsId must be provided."
+    if (!imageName || !credentialsId || !organization) {
+        error "Missing required parameters: organization, imageName and credentialsId must be provided."
     }
 
-    def fullImageName = "${registry}/${imageName}:${tag}"
+    def fullImageName = "${organization}/${imageName}:${tag}"
 
     // Build the Docker image
     echo "Building Docker image: ${fullImageName}"
