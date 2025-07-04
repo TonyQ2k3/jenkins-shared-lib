@@ -21,7 +21,7 @@ def call(Map config = [:]) {
         usernameVariable: 'DOCKER_USERNAME', 
         passwordVariable: 'DOCKER_PASSWORD')
     ]) {
-        sh "echo ${DOCKER_PASSWORD} | docker login ${registry} -u ${DOCKER_USERNAME} --password-stdin"
+        sh "docker login ${registry} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
     }
 
     echo "Pushing Docker image to registry: ${registry}"
