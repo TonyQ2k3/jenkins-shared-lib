@@ -15,10 +15,17 @@ def call(Map config = [:]) {
     sh "docker build -t ${fullImageName} ."
 
     // Log in to the Docker registry
-    echo "Pushing Docker image to registry: ${registry}"
-    withDockerRegistry([credentialsId: credentialsId, url: "https://${registry}"]) {
-        sh "docker push ${fullImageName}"
+    echo "Logging in to Docker registry: ${registry}"
+    withCredentials([usernamePassword(
+        credentialsId: credentialsId, 
+        usernameVariable: 'DOCKER_USERNAME', 
+        passwordVariable: 'DOCKER_PASSWORD')
+    ]) {
+        sh "echo ${DOCKER_PASSWORD} | docker login ${registry} -u ${DOCKER_USERNAME} --password-stdin"
     }
+
+    echo "Pushing Docker image to registry: ${registry}"
+    sh "docker push ${fullImageName}"
 
     echo "Docker image ${fullImageName} pushed successfully."
 }
