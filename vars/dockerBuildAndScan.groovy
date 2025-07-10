@@ -2,7 +2,7 @@ def call(Map config = [:]) {
     def imageName = config.imageName
     def tag = config.tag ?: 'test'
 
-    if (!imageName || !credentialsId || !organization) {
+    if (!imageName) {
         error "Missing required parameters: imageName must be provided."
     }
 
