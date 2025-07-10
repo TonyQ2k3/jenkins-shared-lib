@@ -15,6 +15,6 @@ def call(Map config = [:]) {
 
     // Scan the Docker image
     echo "Scanning Docker image: ${fullImageName}"
-    sh "docker run aquasec/trivy image ${fullImageName}"
+    sh "docker run --rm aquasec/trivy image ${fullImageName} --scanners vuln --severity HIGH,CRITICAL --no-progress"
     echo "Docker image ${fullImageName} scanned completed."
 }
